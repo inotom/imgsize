@@ -38,6 +38,7 @@ func getSize(filePath string) (int, int) {
 
 func main() {
 	var isVerbose bool
+	var noRet bool
 
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, `Usage of %s:
@@ -49,6 +50,7 @@ Options
 		flag.PrintDefaults()
 	}
 	flag.BoolVar(&isVerbose, "v", false, "output with file name")
+	flag.BoolVar(&noRet, "n", false, "without line break")
 	flag.Parse()
 
 	if flag.NArg() == 0 {
@@ -61,6 +63,7 @@ Options
 			w int
 			h int
 			f string = ""
+			n string = "\n"
 		)
 		w, h = getSize(filePath)
 
@@ -68,6 +71,10 @@ Options
 			f = fmt.Sprintf(",%s", filePath)
 		}
 
-		fmt.Printf("%d,%d%s\n", w, h, f)
+		if noRet {
+			n = ""
+		}
+
+		fmt.Printf("%d,%d%s%s", w, h, f, n)
 	}
 }
